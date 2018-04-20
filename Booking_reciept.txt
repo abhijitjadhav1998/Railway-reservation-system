@@ -1,0 +1,7 @@
+
+ Train_no:1567
+ Child_Fare:530.00
+ Adult_Fare:1060.00
+ Total_fare(Without_Ins):1590.00
+ Total_fare(With_Ins):1908.00
+ 
