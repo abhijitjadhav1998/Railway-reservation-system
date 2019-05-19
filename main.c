@@ -2,7 +2,7 @@
 #include<malloc.h>
 #include<string.h>
 #include<stdlib.h>
-
+#include <time.h>
 struct node
 {
     char name[30],gender[2],email[50],clas[10];
@@ -608,6 +608,8 @@ void deleteadmin()
 void book()
 {    char choice3[]="y",choice4[10],choice5[10];
 	read();
+	
+int valid;
 	char dateStr[10];
 	struct node *p;
 	int i=0,choice;
@@ -623,16 +625,93 @@ void book()
     printf("\n\tDestination:\t\t");     //destination of travel
     scanf("%s",last->destination);
     strlwr(last->destination);
-     do{     _strdate(dateStr);
-            printf("\n\t\t SYSTEM DATE:\t%s",dateStr);
-            printf("\n\n\tEnter the Date of travel(mm/dd/yy):\t\t");
-            scanf("\t%s",last->date);
-            if(strcmp((last->date),dateStr) <= 0)
-            {
-                printf("\n\t\t Invalid Date .....!!!!!!\n");
+     do{    
+char buffer[5];
+char buffer1[5];
+char buffer2[5];
 
-             }
-             }while(strcmp((last->date),dateStr) <= 0);
+
+    time_t s, val = 1;
+    struct tm* current_time;
+    s = time(NULL);
+    current_time = localtime(&s);
+     printf("\n\t\t SYSTEM DATE:\t%d/%d/%d",current_time->tm_mday,(current_time->tm_mon + 1),(current_time->tm_year + 1900));
+    
+    
+    
+     int dd, mm, yy;    /* given date */
+
+                 /* flag to indicate date validity */
+
+      
+
+       printf("\n\n\tEnter the Date of travel(dd/mm/yyyy):\t\t");
+
+       scanf("%d/%d/%d", &dd, &mm, &yy);
+
+              /* determine validity of given date */
+
+       valid = 0;
+
+       if (yy != 0) {
+
+               if (mm >= 1 && mm <= 12)  /* check month */
+
+                  {  
+
+                       /* determine number of days in given month */
+
+                       int mdays;
+
+                       if (mm == 2)
+
+                           mdays = (yy % 4 == 0 && yy % 100 != 0 || yy % 400 == 0) ? 29 : 28;
+
+                      else if (mm == 4 || mm == 6 || mm == 9 || mm == 11)
+
+                                mdays = 30;
+
+                      else mdays = 31;
+
+                      if (dd >= 1 && dd <= mdays)
+
+                         valid = 1;
+
+                  }
+
+          }else{
+          	 printf("\n\t\t Invalid Date .....!!!!!!\n");
+		  }
+
+                     
+        if(valid == 1){
+        	if (dd >= current_time->tm_mday && mm >= current_time->tm_mon + 1 && yy >= current_time->tm_year + 1900){
+        		char tempdate[1000];
+        		//printf("Date is valid : %d %d %d",dd,mm,yy);
+        		itoa(dd, buffer, 10);
+        		itoa(mm, buffer1, 10);
+        		itoa(yy, buffer2, 10);
+        		//	printf("Date is valid : %s %s %s",buffer,buffer1,buffer2);
+        			strcat(tempdate, buffer);
+        			strcat(tempdate,"/");
+        			strcat(tempdate,buffer1);
+        			strcat(tempdate,"/");
+        			strcat(tempdate, buffer2);
+        			//printf("Date is : %s ", tempdate);
+        		strcat(last->date, tempdate);
+			}else{
+			  printf("\n\t\t Invalid Date .....!!!!!!\n");
+			  valid = 0;
+			}
+			
+		}else{
+			 printf("\n\t\t Invalid Date .....!!!!!!\n");
+			 valid = 0;
+		}
+           printf("value of valid in the end = %d",valid );
+            
+         
+             }while(valid == 0);
     system("CLS");
     printf("\n----------------------------------------------------------------------------\n");
     printf("\n\tTotal Number of passenger:\t\t");
